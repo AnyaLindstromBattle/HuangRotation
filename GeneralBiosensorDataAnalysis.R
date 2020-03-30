@@ -21,7 +21,7 @@ conf_int95 <- function(data) {
 #Example: setwd("C:/Users/Anya/Dropbox/PhD Oxford 2/Huang rotation/Exp005_Results")
 
 #Manipulate OD600 data to be in right format
-rawdata <- read.csv("Exp005_BiosensorGrowthData.csv", header = FALSE)#Change this line to reflect your own file name 
+rawdata <- read.csv("ExampleBiosensorGrowthData.csv", header = FALSE)#Change this line to reflect your own file name 
 rawdata_transpose <- as.data.frame(t(rawdata))
 
 rawdata_transpose[] <- lapply(rawdata_transpose, as.character)
@@ -31,7 +31,7 @@ rawdata_transpose = rawdata_transpose[, -1]
 
 #Re-organise the data by well
 library(reshape2)
-reshaped <- (melt(rawdata_transpose, id = c("Time [s]", "Temp. [°C]"), variable.name = "Well", value.name = "OD600"))
+reshaped <- (melt(rawdata_transpose, id = c("Time [s]", "Temp. [Â°C]"), variable.name = "Well", value.name = "OD600"))
 
 #View your reshaped data
 summary(reshaped)
@@ -39,7 +39,7 @@ head(reshaped)
 
 #Manipulate Lum Data to be in right format - this is essentially exact same as done above for OD600
 
-rawdata_Lum <- read.csv("Exp005_BiosensorLumData.csv", header = FALSE) #Again, change this file name
+rawdata_Lum <- read.csv("ExampleBiosensorLumData.csv", header = FALSE) #Again, change this file name
 rawdata_Lum_transpose <- as.data.frame(t(rawdata_Lum))
 rawdata_Lum_transpose[] <- lapply(rawdata_Lum_transpose, as.character)
 colnames(rawdata_Lum_transpose) <- rawdata_Lum_transpose[1, ]
@@ -48,18 +48,18 @@ rawdata_Lum_transpose <- rawdata_Lum_transpose[, -1]
 rawdata_Lum_transpose <- rawdata_Lum_transpose[-c(100:103) ]
 
 library(reshape2)
-reshaped_Lum <- (melt(rawdata_Lum_transpose, id = c("Time [s]", "Temp. [°C]"), variable.name = "Well", value.name = "Lum"))
+reshaped_Lum <- (melt(rawdata_Lum_transpose, id = c("Time [s]", "Temp. [Â°C]"), variable.name = "Well", value.name = "Lum"))
 head(reshaped_Lum)
 
 #Import the platemap
-platemap <- read.csv("Exp005_PlatePlan.csv") #Change this to reflect the name of your file
+platemap <- read.csv("ExamplePlatePlan.csv") #Change this to reflect the name of your file
 library(dplyr)
 
 #Organise the data by the information provided in the plate map
 annotated <- inner_join(reshaped, platemap, by="Well")
 annotated_Lum <- inner_join(reshaped_Lum, platemap, by="Well")
-write.csv(annotated, "Exp005_BiosensorGrowthDataAnnotated.csv") #Saves your annotated file in the specified directory
-write.csv(annotated_Lum, "Exp005_BiosensorLumDataAnnotated.csv")
+write.csv(annotated, "BiosensorGrowthDataAnnotated.csv") #Saves your annotated file in the specified directory
+write.csv(annotated_Lum, "BiosensorLumDataAnnotated.csv")
 
 #Calculate the mean, standard deviation, and 95 % confidence interval for your OD600 and Lum data
 #OD600
@@ -111,7 +111,7 @@ OD_Lum$OD600 <- as.numeric(OD_Lum$OD600)
 OD_Lum$Lum_OD <- OD_Lum$Lum/OD_Lum$OD600
 
 annotated_OD_Lum <- inner_join(OD_Lum, platemap, by="Well")
-write.csv(annotated_OD_Lum, "Exp005_BiosensorODLumDataAnnotated.csv")#This saves the final dataset as a new file in the working directory
+write.csv(annotated_OD_Lum, "BiosensorODLumDataAnnotated.csv")#This saves the final dataset as a new file in the working directory
 
 #Calculate same stats as above for the Lum/OD data
 stats_OD_Lum <- annotated_OD_Lum %>%
