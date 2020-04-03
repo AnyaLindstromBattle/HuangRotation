@@ -1,3 +1,7 @@
+##########NOTE##########
+#If this code doesn't work when downloaded, check that R hasn't automatically changed the "Temp. [°C]" label in lines 37 and 54.
+########################
+
 #Code written by Anya Lindstrom Battle in March 2020 for the analysis of data obtained during rotation project with Prof Wei Huang.
 
 #Before running this code make a plate plan in the correct format.
